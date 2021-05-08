@@ -8,6 +8,9 @@ const cors = require("cors");
 
 const MessageModel = require("./db/models/MessageModel");
 
+// routes
+const userRoutes = require("./routes/user");
+
 // set logger
 const logger = generateLogger(getCurrentFilename(__filename));
 
@@ -21,10 +24,13 @@ app.use(cors());
 
 // ????
 
-// api routes
+// health check route
 app.get("/", (req, res) => {
-  res.status(200).send("Hello World");
+  res.status(200).send("Whatsapp clone api v1");
 });
+
+// user routes
+app.use("/api/v1/user", userRoutes);
 
 // add message
 app.post("/api/v1/message", (req, res) => {

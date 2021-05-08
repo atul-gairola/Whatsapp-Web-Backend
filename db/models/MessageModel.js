@@ -10,7 +10,7 @@ const messageSchema = new Schema(
     },
     content: String,
     timestamp: String,
-    status: {type: String, e},
+    status: {type: String},
   },
   { timestamps: true }
 );
