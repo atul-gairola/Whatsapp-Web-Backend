@@ -36,5 +36,23 @@ exports.addUserController = async (req, res) => {
     res.status(201).json({ user: savedUser._id });
   } catch (e) {
     logger.error("Error while saving a user");
+    logger.error(e);
+  }
+};
+
+exports.getSingleUserController = async (req, res) => {
+  try {
+    const { uid } = req.params;
+
+    const user = await UserModel.findOne({ uid: uid });
+
+    if (user) {
+      res.status(200).json({ user, message: "User retrieved" });
+    } else {
+      res.status(404).json({ message: "No user found" });
+    }
+  } catch (e) {
+    logger.error("Error in retrieving a user");
+    logger.error(e);
   }
 };
