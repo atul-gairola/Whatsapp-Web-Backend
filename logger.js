@@ -3,15 +3,16 @@ const {
   format: { combine, splat, timestamp, colorize, printf, simple, label },
   transports,
 } = require("winston");
+const path = require("path");
 
 const myFormat = printf(({ level, message, label, timestamp, ...metadata }) => {
-  let msg = `[${level}] [${timestamp}] : ${message}`;
+  let msg = `${label} :: [${level}] [${timestamp}] :: ${message}`;
   return msg;
 });
 
 const childProcessFormat = printf(
   ({ level, message, timestamp, label, ...metadata }) => {
-    let msg = `child_prc_${label} :: [${level}] [${timestamp}] : ${message}`;
+    let msg = `child_prc_${label} :: [${level}] [${timestamp}] :: ${message}`;
     return msg;
   }
 );
@@ -21,7 +22,7 @@ exports.generateLogger = (labelName) => {
     format: combine(
       colorize(),
       splat(),
-      label(labelName),
+      label({ label: labelName }),
       timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
       myFormat
     ),
@@ -68,4 +69,8 @@ exports.generateCpLogger = (labelName) => {
   }
 
   return logger;
+};
+
+exports.getCurrentFilename = (filename) => {
+  return path.basename(filename);
 };

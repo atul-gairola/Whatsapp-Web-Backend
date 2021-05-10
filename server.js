@@ -2,8 +2,7 @@
 require("dotenv").config();
 require("./db/mongoose");
 const express = require("express");
-const { generateLogger } = require("./logger.js");
-const { getCurrentFilename } = require("./utils");
+const { generateLogger, getCurrentFilename } = require("./logger.js");
 const cors = require("cors");
 
 const MessageModel = require("./db/models/MessageModel");

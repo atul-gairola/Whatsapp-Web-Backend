@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const { generateLogger } = require("../logger");
-const { getCurrentFilename } = require("../utils");
+const { generateLogger, getCurrentFilename } = require("../logger");
 const pusher = require("../pusher");
 
 const logger = generateLogger(getCurrentFilename(__filename));
