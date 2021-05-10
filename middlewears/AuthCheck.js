@@ -14,11 +14,18 @@ const authCheck = async (req, res, next) => {
         .auth()
         .verifyIdToken(token)
         .then((user) => {
-          console.log(user);
+          next();
+        })
+        .catch((e) => {
+          logger.warn(`Incorrect Token : ${e}`);
+          res.status(401).json({ message: "Not authenticated" });
         });
+    } else {
+      res.status(401).json({ message: "Not authenticated" });
     }
+  } else {
+    res.status(401).json({ message: "Not authenticated" });
   }
-  next();
 };
 
 module.exports = authCheck;
