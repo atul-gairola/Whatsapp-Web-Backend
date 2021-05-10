@@ -15,7 +15,7 @@ exports.addUserController = async (req, res) => {
       phoneNumber,
     } = req.body;
 
-    const userExists = await UserModel.findOne({ uid: uid });
+    const userExists = await UserModel.findOne({ googleUID: uid });
 
     if (userExists) {
       logger.info(`User already saved in the DB : userID - ${userExists._id}`);
@@ -24,7 +24,7 @@ exports.addUserController = async (req, res) => {
 
     const savedUser = await UserModel.create({
       displayName,
-      uid,
+      googleUID: uid,
       provider,
       email,
       emailVerified,
@@ -35,6 +35,8 @@ exports.addUserController = async (req, res) => {
     logger.info(`Add user to DB : userID - ${savedUser._id}`);
     res.status(201).json({ user: savedUser._id });
   } catch (e) {
+    res.status(500).json({ message: "Internal server error" });
+
     logger.error("Error while saving a user");
     logger.error(e);
   }
