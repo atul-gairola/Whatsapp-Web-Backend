@@ -4,6 +4,14 @@ require("./db/mongoose");
 const express = require("express");
 const { generateLogger, getCurrentFilename } = require("./logger.js");
 const cors = require("cors");
+const admin = require("firebase-admin");
+
+const serviceAccount = require("./whatsappCloneKey.json");
+
+// initialize firebase admin
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const MessageModel = require("./db/models/MessageModel");
 
