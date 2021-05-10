@@ -8,9 +8,13 @@ const messageSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    chatID: {
+      type: Schema.Types.ObjectId,
+      ref: "chat",
+    },
+    to: [{ type: Schema.Types.ObjectId, ref: "user" }],
     content: String,
-    timestamp: String,
-    status: {type: String},
+    status: { type: String, enum: ["SENT", "DELIVERED", "SEEN"] },
   },
   { timestamps: true }
 );
