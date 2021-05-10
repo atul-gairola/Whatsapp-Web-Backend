@@ -8,7 +8,7 @@ const {
 } = require("../controllers/user.controller");
 
 // create user
-router.post("/", authCheck, addUserController);
+router.post("/", addUserController);
 
 // get a single user
 router.get("/:uid", getSingleUserController);

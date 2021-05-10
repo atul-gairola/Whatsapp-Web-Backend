@@ -19,7 +19,16 @@ exports.addUserController = async (req, res) => {
 
     if (userExists) {
       logger.info(`User already saved in the DB : userID - ${userExists._id}`);
-      return res.status(200).json({ message: "User saved" });
+      return res.status(200).json({
+        message: "User saved",
+        user: {
+          name: userExists.displayName,
+          email: userExists.email,
+          googleUID: userExists.googleUID,
+          id: userExists._id,
+          img: userExists.imageURL,
+        },
+      });
     }
 
     const savedUser = await UserModel.create({
@@ -46,15 +55,23 @@ exports.getSingleUserController = async (req, res) => {
   try {
     const { uid } = req.params;
 
-    const user = await UserModel.findOne({ uid: uid });
+    const user = await UserModel.findOne({ googleUID: uid });
 
     if (user) {
-      res.status(200).json({ user, message: "User retrieved" });
+      res.status(200).json({
+        user: {
+          name: user.displayName,
+          email: user.email,
+          googleUID: user.googleUID,
+          id: user._id,
+          img: user.imageURL,
+        },
+        message: "User retrieved",
+      });
     } else {
       res.status(404).json({ message: "No user found" });
     }
   } catch (e) {
-    logger.error("Error in retrieving a user");
-    logger.error(e);
+    logger.error(`Error in retrieving a user : ${e}`);
   }
 };

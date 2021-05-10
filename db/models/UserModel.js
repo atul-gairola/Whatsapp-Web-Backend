@@ -11,6 +11,10 @@ const userSchema = new Schema(
     emailVerified: Boolean,
     imageURL: String,
     phoneNumber: Number,
+    chatIds: [{
+      type: Schema.Types.ObjectId,
+      ref: "chat"
+    }]
   },
   { timestamps: true }
 );

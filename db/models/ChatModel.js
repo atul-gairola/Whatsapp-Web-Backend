@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const chatSchema = new Schema(
   {
     isGroup: Boolean,
+    groupName: String,
     members: [
       {
         type: Schema.Types.ObjectId,
