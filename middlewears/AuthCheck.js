@@ -14,7 +14,6 @@ const authCheck = async (req, res, next) => {
         .auth()
         .verifyIdToken(token)
         .then((user) => {
-          console.log(user);
           req.user = {
             name: user.name,
             uid: user.user_id,

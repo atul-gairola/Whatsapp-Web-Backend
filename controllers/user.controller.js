@@ -54,6 +54,12 @@ exports.addUserController = async (req, res) => {
 exports.getSingleUserController = async (req, res) => {
   try {
     const { uid } = req.params;
+    const { user: authUser } = req;
+
+    if (uid !== authUser.uid) {
+      logger.error(`Authenticated user not allowed access`);
+      return res.status(403).json({ message: "Forbidden" });
+    }
 
     const user = await UserModel.findOne({ googleUID: uid });
 
@@ -76,4 +82,43 @@ exports.getSingleUserController = async (req, res) => {
   }
 };
 
-exports.updateUserController = async (req, res) => {};
+exports.updateUserController = async (req, res) => {
+  const {
+    user,
+    params: { uid },
+    body,
+  } = req;
+
+  if (uid !== user.uid) {
+    logger.error(`Authenticated user not allowed access`);
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  const keys = Object.keys(body);
+
+  if (keys.length === 0) {
+    return res.status(422).json({ message: "Empty data recieved" });
+  }
+
+  const item = keys[0];
+  const value = body[item];
+
+  const updatedUser = await UserModel.findOneAndUpdate(
+    { googleUID: uid },
+    {
+      [item]: value,
+    },
+    {
+      new: true,
+      upsert: true,
+    }
+  );
+
+  console.log(updatedUser);
+  // console.log(Object.keys(body));
+
+  res.status(200).json({
+    message: "Updated Successfully",
+    update: { [item]: updatedUser[item] },
+  });
+};
