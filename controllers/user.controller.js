@@ -75,3 +75,5 @@ exports.getSingleUserController = async (req, res) => {
     logger.error(`Error in retrieving a user : ${e}`);
   }
 };
+
+exports.updateUserController = async (req, res) => {};
