@@ -46,3 +46,9 @@ Routes : user.controller.js :: [[31merror[39m] [2021-05-10 20:58:09] :: Error 
 Routes : user.controller.js :: [[31merror[39m] [2021-05-10 20:58:09] :: userExists is not defined
 Routes : user.controller.js :: [[31merror[39m] [2021-05-10 20:58:28] :: Error in retrieving a user
 Routes : user.controller.js :: [[31merror[39m] [2021-05-10 20:58:28] :: userExists is not defined
+Routes : user.controller.js :: [[31merror[39m] [2021-05-12 21:55:10] :: Authenticated user not allowed access
+Routes : user.controller.js :: [[31merror[39m] [2021-05-12 21:58:35] :: Authenticated user not allowed access
+Routes : user.controller.js :: [[31merror[39m] [2021-05-12 21:58:52] :: Authenticated user not allowed access
+Routes : user.controller.js :: [[31merror[39m] [2021-05-12 21:59:04] :: Authenticated user not allowed access
+Routes : user.controller.js :: [[31merror[39m] [2021-05-12 22:00:23] :: Authenticated user not allowed access
+Routes : user.controller.js :: [[31merror[39m] [2021-05-12 22:02:23] :: Authenticated user not allowed access

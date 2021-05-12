@@ -71,6 +71,7 @@ exports.getSingleUserController = async (req, res) => {
           googleUID: user.googleUID,
           id: user._id,
           img: user.imageURL,
+          about: user.about || "",
         },
         message: "User retrieved",
       });
@@ -83,42 +84,50 @@ exports.getSingleUserController = async (req, res) => {
 };
 
 exports.updateUserController = async (req, res) => {
-  const {
-    user,
-    params: { uid },
-    body,
-  } = req;
+  try {
+    const {
+      user,
+      params: { uid },
+      body,
+    } = req;
 
-  if (uid !== user.uid) {
-    logger.error(`Authenticated user not allowed access`);
-    return res.status(403).json({ message: "Forbidden" });
-  }
-
-  const keys = Object.keys(body);
-
-  if (keys.length === 0) {
-    return res.status(422).json({ message: "Empty data recieved" });
-  }
-
-  const item = keys[0];
-  const value = body[item];
-
-  const updatedUser = await UserModel.findOneAndUpdate(
-    { googleUID: uid },
-    {
-      [item]: value,
-    },
-    {
-      new: true,
-      upsert: true,
+    if (uid !== user.uid) {
+      logger.error(`Authenticated user not allowed access`);
+      return res.status(403).json({ message: "Forbidden" });
     }
-  );
 
-  console.log(updatedUser);
-  // console.log(Object.keys(body));
+    const keys = Object.keys(body);
 
-  res.status(200).json({
-    message: "Updated Successfully",
-    update: { [item]: updatedUser[item] },
-  });
+    if (keys.length === 0) {
+      return res.status(422).json({ message: "Empty data recieved" });
+    }
+
+    const item = keys[0];
+    const value = body[item];
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { googleUID: uid },
+      {
+        [item]: value,
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    );
+
+    console.log(updatedUser);
+    // console.log(Object.keys(body));
+
+    res.status(200).json({
+      message: "Updated Successfully",
+      update: { [item]: updatedUser[item] },
+    });
+  } catch (e) {
+    logger.error(`Error in updating user : ${e}`);
+    res.status(500).json({
+      message: "Internal Server Error. Please try after some time.",
+      error: e,
+    });
+  }
 };
