@@ -7,14 +7,17 @@ const userSchema = new Schema(
     displayName: String,
     googleUID: { type: String, unique: true },
     provider: String,
+    about: String,
     email: { type: String, unique: true },
     emailVerified: Boolean,
     imageURL: String,
     phoneNumber: Number,
-    chatIds: [{
-      type: Schema.Types.ObjectId,
-      ref: "chat"
-    }]
+    chatIds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "chat",
+      },
+    ],
   },
   { timestamps: true }
 );
