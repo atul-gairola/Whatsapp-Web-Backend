@@ -1,5 +1,6 @@
 const admin = require("firebase-admin");
 
+const UserModel = require("../db/models/UserModel");
 const { generateLogger, getCurrentFilename } = require("../logger");
 const logger = generateLogger(`Middlewear - ${getCurrentFilename(__filename)}`);
 
@@ -14,13 +15,16 @@ const authCheck = async (req, res, next) => {
         .auth()
         .verifyIdToken(token)
         .then((user) => {
-          req.user = {
-            name: user.name,
-            uid: user.user_id,
-            email: user.email,
-            provider: user.firebase.sign_in_provider,
-          };
-          next();
+          UserModel.findOne({ googleUID: user.user_id }).then((userInDB) => {
+            req.user = {
+              name: user.name,
+              uid: user.user_id,
+              _id: userInDB._id,
+              email: user.email,
+              provider: user.firebase.sign_in_provider,
+            };
+            next();
+          });
         })
         .catch((e) => {
           logger.warn(`Incorrect Token : ${e}`);

@@ -54,9 +54,9 @@ exports.addUserController = async (req, res) => {
 exports.getSingleUserController = async (req, res) => {
   try {
     const { uid } = req.params;
-    const { user: authUser } = req;
+    const { currentUser } = req;
 
-    if (uid !== authUser.uid) {
+    if (uid !== currentUser.uid) {
       logger.error(`Authenticated user not allowed access`);
       return res.status(403).json({ message: "Forbidden" });
     }
@@ -86,12 +86,12 @@ exports.getSingleUserController = async (req, res) => {
 exports.updateUserController = async (req, res) => {
   try {
     const {
-      user,
+      currentUser,
       params: { uid },
       body,
     } = req;
 
-    if (uid !== user.uid) {
+    if (uid !== currentUser.uid) {
       logger.error(`Authenticated user not allowed access`);
       return res.status(403).json({ message: "Forbidden" });
     }
