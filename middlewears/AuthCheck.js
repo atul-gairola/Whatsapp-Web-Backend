@@ -16,7 +16,7 @@ const authCheck = async (req, res, next) => {
         .verifyIdToken(token)
         .then((user) => {
           UserModel.findOne({ googleUID: user.user_id }).then((userInDB) => {
-            req.user = {
+            req.currentUser = {
               name: user.name,
               uid: user.user_id,
               _id: userInDB._id,

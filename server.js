@@ -10,13 +10,15 @@ const serviceAccount = require("./whatsappCloneKey.json");
 
 // initialize firebase admin
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
 });
 
 const MessageModel = require("./db/models/MessageModel");
 
 // routes
 const userRoutes = require("./routes/user");
+const chatRoutes = require("./routes/chat");
+const messageRoutes = require("./routes/message");
 
 // set logger
 const logger = generateLogger(getCurrentFilename(__filename));
@@ -38,6 +40,12 @@ app.get("/", (req, res) => {
 
 // user routes
 app.use("/api/v1/user", userRoutes);
+
+// chat routes
+app.use("/api/v1/chat", chatRoutes);
+
+// chat routes
+app.use("/api/v1/chat/:chatId/message", messageRoutes);
 
 // add message
 app.post("/api/v1/message", (req, res) => {
