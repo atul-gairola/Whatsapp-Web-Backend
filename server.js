@@ -45,7 +45,7 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/chat", chatRoutes);
 
 // chat routes
-app.use("/api/v1/chat/:chatId/message", messageRoutes);
+app.use("/api/v1/chat", messageRoutes);
 
 // add message
 app.post("/api/v1/message", (req, res) => {
