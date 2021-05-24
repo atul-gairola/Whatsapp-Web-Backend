@@ -15,7 +15,9 @@ exports.addUserController = async (req, res) => {
       phoneNumber,
     } = req.body;
 
-    const userExists = await UserModel.findOne({ googleUID: uid });
+    const userExists = UserModel.findOne({ googleUID: uid }).populate(
+      "chatIds"
+    );
 
     if (userExists) {
       logger.info(`User already saved in the DB : userID - ${userExists._id}`);
@@ -27,6 +29,7 @@ exports.addUserController = async (req, res) => {
           googleUID: userExists.googleUID,
           id: userExists._id,
           img: userExists.imageURL,
+          chats: userExists.chatIds,
         },
       });
     }
@@ -61,7 +64,17 @@ exports.getSingleUserController = async (req, res) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    const user = await UserModel.findOne({ googleUID: uid });
+    const user = await UserModel.findOne({ googleUID: uid }).populate({
+      path: "chatIds",
+      select: "isGroup lastMessage members _id groupName",
+      populate: {
+        path: "members",
+        select: "displayName email _id imageURL",
+      },
+      populate: {
+        path: "lastMessage",
+      },
+    });
 
     if (user) {
       res.status(200).json({
@@ -72,6 +85,7 @@ exports.getSingleUserController = async (req, res) => {
           id: user._id,
           img: user.imageURL,
           about: user.about || "",
+          chats: user.chatIds,
         },
         message: "User retrieved",
       });
