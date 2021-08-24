@@ -67,13 +67,15 @@ exports.getSingleUserController = async (req, res) => {
     const user = await UserModel.findOne({ googleUID: uid }).populate({
       path: "chatIds",
       select: "isGroup lastMessage members _id groupName",
-      populate: {
-        path: "members",
-        select: "displayName email _id imageURL",
-      },
-      populate: {
-        path: "lastMessage",
-      },
+      populate: [
+        {
+          path: "members",
+          select: "displayName email _id imageURL",
+        },
+        {
+          path: "lastMessage",
+        },
+      ],
     });
 
     if (user) {
